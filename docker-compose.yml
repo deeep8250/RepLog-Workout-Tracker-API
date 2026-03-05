@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+ app:
+  build: .
+  ports: 
+   - "8080:8080"
+  env_file:
+   - .env
+  depends_on:
+   - db
+
+ db:
+    image: postgres:15-alpine
+    ports:
+     - "5433:5432"
+    environment:
+     POSTGRES_USER: replog
+     POSTGRES_PASSWORD: replog123
+     POSTGRES_DB: replog_db
+    volumes:
+     - postgres_data:/var/lib/postresql/data
+
+volumes:
+  postgres_data:        

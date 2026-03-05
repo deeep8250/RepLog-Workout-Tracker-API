@@ -1,0 +1,9 @@
+.env
+replog
+
+.exe
+.out
+
+docker-compose.override.yml
+.vscode/
+.idea/
