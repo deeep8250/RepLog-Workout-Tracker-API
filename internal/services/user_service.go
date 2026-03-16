@@ -1,6 +1,7 @@
 package services
 
 import (
+	"database/sql"
 	"errors"
 	"replog/internal/models"
 	"replog/internal/repository"
@@ -21,7 +22,7 @@ func (s *AuthService) Register(req *models.RegisterRequest) error {
 	if existing != nil {
 		return errors.New("user already exists")
 	}
-	if err != nil && err.Error() != "sql: no rows in result set" {
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
 		return err
 	}
 

@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"database/sql"
+	"errors"
 	"replog/internal/models"
 
 	"github.com/jmoiron/sqlx"
@@ -24,5 +26,12 @@ func (r *UserRepository) GetUserByEmail(email string) (*models.User, error) {
 	user := &models.User{}
 	query := `select * from users  where email=$1`
 	err := r.db.Get(user, query, email)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, nil
+		}
+
+		return nil, err
+	}
 	return user, err
 }

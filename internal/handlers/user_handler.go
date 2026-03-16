@@ -41,7 +41,7 @@ func (h *AuthHandler) RegisterUser(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "something went wrong",
+			"error": err.Error(),
 		})
 		return
 
