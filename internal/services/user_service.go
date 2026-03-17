@@ -54,6 +54,9 @@ func (s *AuthService) Login(req *models.LoginRequest) (string, error) {
 
 		return "", err
 	}
+	if exist == nil {
+		return "", errors.New("something went wrong while finding the user")
+	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(exist.Password_hash), []byte(req.Password))
 	if err != nil {
