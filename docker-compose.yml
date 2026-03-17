@@ -18,7 +18,7 @@ services:
      POSTGRES_PASSWORD: replog123
      POSTGRES_DB: replog_db
     volumes:
-     - postgres_data:/var/lib/postresql/data
+     - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:        
