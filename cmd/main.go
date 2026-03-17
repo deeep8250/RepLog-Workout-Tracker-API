@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"replog/internal/handlers"
+	"replog/internal/middleware"
 	"replog/internal/repository"
 	"replog/internal/services"
 	"time"
@@ -60,6 +62,24 @@ func main() {
 	{
 		auth.POST("/register", UserHandler.RegisterUser)
 		auth.POST("/login", UserHandler.LoginUser)
+	}
+
+	protected := r.Group("/")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		protected.GET("/test", func(ctx *gin.Context) {
+			userID, exists := ctx.Get("userID")
+			if !exists {
+				ctx.JSON(http.StatusUnauthorized, gin.H{
+					"error": "user isnt authorized",
+				})
+				return
+			}
+			ctx.JSON(http.StatusOK, gin.H{
+				"protected route works fine your user id is : ": userID,
+			})
+		})
+
 	}
 
 	fmt.Println("server is starting at port 8080....")
