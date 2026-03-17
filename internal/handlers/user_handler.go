@@ -52,3 +52,35 @@ func (h *AuthHandler) RegisterUser(c *gin.Context) {
 	})
 
 }
+
+func (h *AuthHandler) LoginUser(c *gin.Context) {
+
+	var User models.LoginRequest
+	err := c.ShouldBindJSON(&User)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if User.Email == "" || User.Passowrd == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "empty fields",
+		})
+		return
+	}
+
+	token, err := h.authService.Login(&User)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+	})
+
+}

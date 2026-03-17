@@ -39,3 +39,31 @@ func (s *AuthService) Register(req *models.RegisterRequest) error {
 	return s.userRepo.CreateUser(&user)
 
 }
+
+func (s *AuthService) Login(req *models.LoginRequest) (string, error) {
+
+	if req.Email == "" || req.Passowrd == "" {
+		return "", errors.New("please provide data to all fields")
+	}
+
+	exist, err := s.userRepo.GetUserByEmail(req.Email)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", errors.New("user not exist")
+		}
+
+		return "", err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(exist.Password_hash), []byte(req.Passowrd))
+	if err != nil {
+		return "", err
+	}
+
+	token, err := JwtGenerate(exist.Id)
+	if err != nil {
+		return "", errors.New(err.Error())
+	}
+	return token, nil
+
+}
