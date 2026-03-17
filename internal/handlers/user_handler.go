@@ -64,7 +64,7 @@ func (h *AuthHandler) LoginUser(c *gin.Context) {
 		return
 	}
 
-	if User.Email == "" || User.Passowrd == "" {
+	if User.Email == "" || User.Password == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "empty fields",
 		})

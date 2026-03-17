@@ -42,7 +42,7 @@ func (s *AuthService) Register(req *models.RegisterRequest) error {
 
 func (s *AuthService) Login(req *models.LoginRequest) (string, error) {
 
-	if req.Email == "" || req.Passowrd == "" {
+	if req.Email == "" || req.Password == "" {
 		return "", errors.New("please provide data to all fields")
 	}
 
@@ -55,7 +55,7 @@ func (s *AuthService) Login(req *models.LoginRequest) (string, error) {
 		return "", err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(exist.Password_hash), []byte(req.Passowrd))
+	err = bcrypt.CompareHashAndPassword([]byte(exist.Password_hash), []byte(req.Password))
 	if err != nil {
 		return "", err
 	}
