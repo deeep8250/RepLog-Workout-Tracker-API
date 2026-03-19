@@ -60,7 +60,7 @@ func (s *AuthService) Login(req *models.LoginRequest) (string, error) {
 
 	err = bcrypt.CompareHashAndPassword([]byte(exist.Password_hash), []byte(req.Password))
 	if err != nil {
-		return "", err
+		return "", errors.New("wrong password")
 	}
 
 	token, err := JwtGenerate(exist.Id)

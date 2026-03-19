@@ -52,16 +52,15 @@ func main() {
 	fmt.Println("database connected successfully")
 
 	//dependency injection
-	UserRepo := repository.NewUserRepository(db)
-	UserService := services.NewAuthService(UserRepo)
-	UserHandler := handlers.NewAuthHandler(UserService)
-
+	userRepo := repository.NewUserRepository(db)
+	userService := services.NewAuthService(userRepo)
+	userHandler := handlers.NewAuthHandler(userService)
 	r := gin.Default()
 
 	auth := r.Group("/auth")
 	{
-		auth.POST("/register", UserHandler.RegisterUser)
-		auth.POST("/login", UserHandler.LoginUser)
+		auth.POST("/register", userHandler.RegisterUser)
+		auth.POST("/login", userHandler.LoginUser)
 	}
 
 	protected := r.Group("/")
