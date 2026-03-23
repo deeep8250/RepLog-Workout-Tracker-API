@@ -22,3 +22,11 @@ type LoginRequest struct {
 type AuthResponse struct {
 	Token string `json:"token"`
 }
+
+type Exercises struct {
+	ID          int       `db:"id" json:"id"`
+	Name        string    `db:"name" json:"name"`
+	MuscleGroup string    `db:"muscle_group" json:"muscle_group"`
+	CreatedBy   *int      `db:"created_by" json:"created_by"`
+	CreatedAt   time.Time `db:"created_at" json:"created_at"`
+}
