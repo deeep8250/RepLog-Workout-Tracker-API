@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"replog/internal/handlers"
 	"replog/internal/middleware"
@@ -51,10 +50,16 @@ func main() {
 	fmt.Println("database connected successfully")
 	fmt.Println("database connected successfully")
 
-	//dependency injection
+	//dependency injection  (auth)
 	userRepo := repository.NewUserRepository(db)
 	userService := services.NewAuthService(userRepo)
 	userHandler := handlers.NewAuthHandler(userService)
+
+	//dependency injection (exercises)
+	ExerciseRepo := repository.NewExerCiseRepo(db)
+	ExerciseService := services.NewExerciseService(ExerciseRepo)
+	ExerciseHandler := handlers.NewExerciseHandler(ExerciseService)
+
 	r := gin.Default()
 
 	auth := r.Group("/auth")
@@ -66,18 +71,7 @@ func main() {
 	protected := r.Group("/")
 	protected.Use(middleware.AuthMiddleware())
 	{
-		protected.GET("/test", func(ctx *gin.Context) {
-			userID, exists := ctx.Get("userID")
-			if !exists {
-				ctx.JSON(http.StatusUnauthorized, gin.H{
-					"error": "user isnt authorized",
-				})
-				return
-			}
-			ctx.JSON(http.StatusOK, gin.H{
-				"protected route works fine your user id is : ": userID,
-			})
-		})
+		protected.GET("/exercises", ExerciseHandler.GetAllExercises)
 
 	}
 
