@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"database/sql"
-	"errors"
 	"replog/internal/models"
 
 	"github.com/jmoiron/sqlx"
@@ -32,14 +30,24 @@ func NewExerCiseRepo(Db *sqlx.DB) *ExerciseRepo {
 
 // }
 
-func (r *ExerciseRepo) GetAllExercises(id int) ([]models.Exercises, error) {
+func (r *ExerciseRepo) GetAllExercises(muscle string, id int) ([]models.Exercises, error) {
+
+	var query string
 	exercises := []models.Exercises{}
-	query := `select * from exercises where created_by is null or created_by=$1`
-	err := r.db.Select(&exercises, query, id)
+	var err error
+
+	if muscle != "" {
+		query = `select * from exercises where (created_by is null or created_by=$1) and muscle_group=$2`
+		err = r.db.Select(&exercises, query, id, muscle)
+
+	} else {
+
+		query = `select * from exercises where created_by is null or created_by=$1`
+		err = r.db.Select(&exercises, query, id)
+
+	}
+
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, err
-		}
 
 		return nil, err
 	}

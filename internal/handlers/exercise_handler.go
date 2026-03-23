@@ -27,7 +27,9 @@ func (h *UserHandler) GetAllExercises(c *gin.Context) {
 		return
 	}
 
-	exercises, err := h.services.GetAllExercises(UserId.(int))
+	muscle := c.Query("muscle")
+
+	exercises, err := h.services.GetAllExercises(muscle, UserId.(int))
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),

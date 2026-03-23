@@ -14,9 +14,9 @@ func NewExerciseService(ExerCiseRepo *repository.ExerciseRepo) *ExerciseServices
 	return &ExerciseServices{repoExerCise: ExerCiseRepo}
 }
 
-func (s *ExerciseServices) GetAllExercises(id int) ([]models.Exercises, error) {
+func (s *ExerciseServices) GetAllExercises(muscle string, id int) ([]models.Exercises, error) {
 
-	exercises, err := s.repoExerCise.GetAllExercises(id)
+	exercises, err := s.repoExerCise.GetAllExercises(muscle, id)
 	if err != nil {
 		return nil, err
 	}
