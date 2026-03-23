@@ -72,6 +72,7 @@ func main() {
 	protected.Use(middleware.AuthMiddleware())
 	{
 		protected.GET("/exercises", ExerciseHandler.GetAllExercises)
+		protected.POST("/exercises", ExerciseHandler.CreateExercises)
 
 	}
 
