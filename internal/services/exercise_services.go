@@ -25,3 +25,13 @@ func (s *ExerciseServices) GetAllExercises(muscle string, id int) ([]models.Exer
 
 	return exercises, nil
 }
+
+func (s *ExerciseServices) CreateExercises(exercises *models.Exercises, userID int) error {
+
+	err := s.repoExerCise.InsertExercise(exercises, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
