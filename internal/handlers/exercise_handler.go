@@ -62,7 +62,9 @@ func (h *UserHandler) CreateExercises(c *gin.Context) {
 		return
 	}
 
-	err = h.services.CreateExercises(&Exercise, userID.(int))
+	userIDint := userID.(int)
+	Exercise.CreatedBy = &userIDint
+	err = h.services.CreateExercises(&Exercise)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

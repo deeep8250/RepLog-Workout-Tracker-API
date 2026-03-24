@@ -26,9 +26,9 @@ func (s *ExerciseServices) GetAllExercises(muscle string, id int) ([]models.Exer
 	return exercises, nil
 }
 
-func (s *ExerciseServices) CreateExercises(exercises *models.Exercises, userID int) error {
+func (s *ExerciseServices) CreateExercises(exercises *models.Exercises) error {
 
-	err := s.repoExerCise.InsertExercise(exercises, userID)
+	err := s.repoExerCise.InsertExercise(exercises)
 	if err != nil {
 		return err
 	}

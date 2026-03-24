@@ -56,7 +56,7 @@ func (r *ExerciseRepo) GetAllExercises(muscle string, id int) ([]models.Exercise
 
 }
 
-func (r *ExerciseRepo) InsertExercise(exercise *models.Exercises, userID int) error {
+func (r *ExerciseRepo) InsertExercise(exercise *models.Exercises) error {
 	query := `insert into exercises(name,muscle_group,created_by) values ($1,$2,$3)`
 	_, err := r.db.Exec(query, exercise.Name, exercise.MuscleGroup, exercise.CreatedBy)
 	if err != nil {
