@@ -80,6 +80,8 @@ func main() {
 		protected.POST("/exercises", ExerciseHandler.CreateExercises)
 		protected.POST("/workouts", WorkoutsHandler.CreateWorkouts)
 		protected.GET("/workouts", WorkoutsHandler.GetAllWorkouts)
+		protected.GET("/workout/:id", WorkoutsHandler.GetWorkoutByID)
+		protected.DELETE("/workout/:id", WorkoutsHandler.DeleteWorkoutByID)
 
 	}
 

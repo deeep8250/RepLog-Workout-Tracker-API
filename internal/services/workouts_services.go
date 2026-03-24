@@ -29,3 +29,21 @@ func (s *WorkoutsServices) GetWorkouts(userID int) ([]models.Workouts, error) {
 	}
 	return workouts, nil
 }
+
+func (s *WorkoutsServices) GetWorkoutsByID(ID, userID int) (*models.Workouts, error) {
+
+	workouts, err := s.repoWorkouts.GetWorkoutsByID(ID, userID)
+	if err != nil {
+		return nil, err
+	}
+	return workouts, nil
+}
+
+func (s *WorkoutsServices) DeleteWorkouts(ID, userID int) error {
+
+	err := s.repoWorkouts.DeleteWorkoutByID(ID, userID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"replog/internal/models"
 	"replog/internal/services"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -75,6 +76,98 @@ func (h *WorkoutHandler) GetAllWorkouts(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"workouts": workouts,
+	})
+
+}
+
+func (h *WorkoutHandler) GetWorkoutByID(c *gin.Context) {
+
+	Id := c.Param("id")
+	if Id == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "please provide the value",
+		})
+		return
+	}
+
+	IDint, err := strconv.Atoi(Id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	userIDint := userID.(int)
+
+	workout, err := h.services.GetWorkoutsByID(IDint, userIDint)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "invalid input",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"workout": workout,
+	})
+
+}
+
+func (h *WorkoutHandler) DeleteWorkoutByID(c *gin.Context) {
+
+	Id := c.Param("id")
+	if Id == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "please provide the workout id",
+		})
+		return
+	}
+
+	IDint, err := strconv.Atoi(Id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	userIDint := userID.(int)
+
+	err = h.services.DeleteWorkouts(IDint, userIDint)
+	if err != nil {
+
+		if err.Error() == "workout not found" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error": "workout not found",
+			})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "user not found",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "workout deleted",
 	})
 
 }
