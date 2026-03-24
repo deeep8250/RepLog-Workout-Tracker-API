@@ -36,19 +36,19 @@ func (s *ExerciseServices) CreateExercises(exercises *models.Exercises) error {
 
 }
 
-func (s *ExerciseServices) CreateWorkouts(workouts *models.Workouts) error {
-	err := s.repoExerCise.CreateWorkouts(workouts)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+// func (s *ExerciseServices) CreateWorkouts(workouts *models.Workouts) error {
+// 	err := s.repoExerCise.CreateWorkouts(workouts)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
 
-func (s *ExerciseServices) GetWorkouts(userID int) ([]models.Workouts, error) {
+// func (s *ExerciseServices) GetWorkouts(userID int) ([]models.Workouts, error) {
 
-	workouts, err := s.repoExerCise.GetWorkouts(userID)
-	if err != nil {
-		return nil, err
-	}
-	return workouts, nil
-}
+// 	workouts, err := s.repoExerCise.GetWorkouts(userID)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return workouts, nil
+// }

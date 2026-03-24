@@ -60,6 +60,11 @@ func main() {
 	ExerciseService := services.NewExerciseService(ExerciseRepo)
 	ExerciseHandler := handlers.NewExerciseHandler(ExerciseService)
 
+	// dependency injection (workouts)
+	WorkoutsRepo := repository.NewWorkoutsRepo(db)
+	WorkoutsService := services.NewWorkoutsService(WorkoutsRepo)
+	WorkoutsHandler := handlers.NewWorkoutHandler(WorkoutsService)
+
 	r := gin.Default()
 
 	auth := r.Group("/auth")
@@ -73,8 +78,8 @@ func main() {
 	{
 		protected.GET("/exercises", ExerciseHandler.GetAllExercises)
 		protected.POST("/exercises", ExerciseHandler.CreateExercises)
-		protected.POST("/workouts", ExerciseHandler.CreateWorkouts)
-		protected.GET("/workouts", ExerciseHandler.GetAllWorkouts)
+		protected.POST("/workouts", WorkoutsHandler.CreateWorkouts)
+		protected.GET("/workouts", WorkoutsHandler.GetAllWorkouts)
 
 	}
 
