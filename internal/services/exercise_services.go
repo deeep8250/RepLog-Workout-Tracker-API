@@ -43,3 +43,12 @@ func (s *ExerciseServices) CreateWorkouts(workouts *models.Workouts) error {
 	}
 	return nil
 }
+
+func (s *ExerciseServices) GetWorkouts(userID int) ([]models.Workouts, error) {
+
+	workouts, err := s.repoExerCise.GetWorkouts(userID)
+	if err != nil {
+		return nil, err
+	}
+	return workouts, nil
+}

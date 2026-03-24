@@ -74,6 +74,7 @@ func main() {
 		protected.GET("/exercises", ExerciseHandler.GetAllExercises)
 		protected.POST("/exercises", ExerciseHandler.CreateExercises)
 		protected.POST("/workouts", ExerciseHandler.CreateWorkouts)
+		protected.GET("/workouts", ExerciseHandler.GetAllWorkouts)
 
 	}
 

@@ -73,3 +73,13 @@ func (r *ExerciseRepo) CreateWorkouts(workouts *models.Workouts) error {
 	}
 	return nil
 }
+
+func (r *ExerciseRepo) GetWorkouts(userID int) ([]models.Workouts, error) {
+	workouts := []models.Workouts{}
+	query := `select *  from workouts where user_id=$1`
+	err := r.db.Select(&workouts, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	return workouts, nil
+}

@@ -114,3 +114,28 @@ func (h *UserHandler) CreateWorkouts(c *gin.Context) {
 	})
 
 }
+
+func (h *UserHandler) GetAllWorkouts(c *gin.Context) {
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	userIDint := userID.(int)
+	workouts, err := h.services.GetWorkouts(userIDint)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"workouts": workouts,
+	})
+
+}
