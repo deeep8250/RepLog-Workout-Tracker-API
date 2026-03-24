@@ -30,3 +30,10 @@ type Exercises struct {
 	CreatedBy   *int      `db:"created_by" json:"created_by"`
 	CreatedAt   time.Time `db:"created_at" json:"created_at" `
 }
+
+type Workouts struct {
+	ID     int       `db:"id" json:"id"`
+	UserID int       `db:"user_id" json:"user_id"`
+	Notes  string    `db:"notes" json:"notes" binding:"required"`
+	Date   time.Time `db:"date" json:"date"`
+}

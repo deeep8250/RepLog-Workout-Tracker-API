@@ -64,3 +64,12 @@ func (r *ExerciseRepo) InsertExercise(exercise *models.Exercises) error {
 	}
 	return nil
 }
+
+func (r *ExerciseRepo) CreateWorkouts(workouts *models.Workouts) error {
+	query := `insert into workouts(user_id,notes) values($1,$2) `
+	_, err := r.db.Exec(query, workouts.UserID, workouts.Notes)
+	if err != nil {
+		return err
+	}
+	return nil
+}

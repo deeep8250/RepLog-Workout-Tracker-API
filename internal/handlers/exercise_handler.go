@@ -57,12 +57,13 @@ func (h *UserHandler) CreateExercises(c *gin.Context) {
 	userID, ok := c.Get("userID")
 	if !ok {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "user isnt found",
+			"error": "unauthorized user",
 		})
 		return
 	}
 
 	userIDint := userID.(int)
+
 	Exercise.CreatedBy = &userIDint
 	err = h.services.CreateExercises(&Exercise)
 	if err != nil {
@@ -74,6 +75,42 @@ func (h *UserHandler) CreateExercises(c *gin.Context) {
 
 	c.JSON(201, gin.H{
 		"message": "workout successfully created",
+	})
+
+}
+
+func (h *UserHandler) CreateWorkouts(c *gin.Context) {
+
+	var workouts models.Workouts
+	err := c.ShouldBindJSON(&workouts)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "please provide data for all fields",
+		})
+		return
+	}
+
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized user",
+		})
+		return
+	}
+
+	userIDint := userID.(int)
+	workouts.UserID = userIDint
+
+	err = h.services.CreateWorkouts(&workouts)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "cant create the workouts ,something went wrong !",
+		})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "successfully cretaed your workouts",
 	})
 
 }

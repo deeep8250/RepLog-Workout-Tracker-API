@@ -35,3 +35,11 @@ func (s *ExerciseServices) CreateExercises(exercises *models.Exercises) error {
 	return nil
 
 }
+
+func (s *ExerciseServices) CreateWorkouts(workouts *models.Workouts) error {
+	err := s.repoExerCise.CreateWorkouts(workouts)
+	if err != nil {
+		return err
+	}
+	return nil
+}
