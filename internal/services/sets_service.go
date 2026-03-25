@@ -23,3 +23,11 @@ func (s *SetsService) CreateSets(sets *models.Sets) error {
 
 	return nil
 }
+
+func (s *SetsService) GetAllSets(workoutID int) ([]models.Sets, error) {
+	results, err := s.repo.GetSets(workoutID)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
+}

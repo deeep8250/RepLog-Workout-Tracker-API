@@ -78,3 +78,50 @@ func (h *setHandler) CreateSets(c *gin.Context) {
 	})
 
 }
+
+func (h *setHandler) GetAllSets(c *gin.Context) {
+	userID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorised user",
+		})
+		return
+	}
+
+	workoutID := c.Param("id")
+	workoutIDInt, err := strconv.Atoi(workoutID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	t, err := h.WorkoutService.GetWorkoutsByID(workoutIDInt, userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if t == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "workouts not belongs to the user",
+		})
+		return
+	}
+
+	results, err := h.SetService.GetAllSets(workoutIDInt)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"sets": results,
+	})
+
+}

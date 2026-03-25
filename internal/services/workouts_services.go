@@ -30,9 +30,9 @@ func (s *WorkoutsServices) GetWorkouts(userID int) ([]models.Workouts, error) {
 	return workouts, nil
 }
 
-func (s *WorkoutsServices) GetWorkoutsByID(ID, userID int) (*models.Workouts, error) {
+func (s *WorkoutsServices) GetWorkoutsByID(workoutID, userID int) (*models.Workouts, error) {
 
-	workouts, err := s.repoWorkouts.GetWorkoutsByID(ID, userID)
+	workouts, err := s.repoWorkouts.GetWorkoutsByID(workoutID, userID)
 	if err != nil {
 		return nil, err
 	}

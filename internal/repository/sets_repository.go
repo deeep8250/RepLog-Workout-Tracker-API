@@ -36,3 +36,13 @@ func (r *SetsRepo) CreateSets(sets *models.Sets) error {
 	return nil
 
 }
+
+func (r *SetsRepo) GetSets(workoutID int) ([]models.Sets, error) {
+	var sets []models.Sets
+	query := `select * from sets where workout_id=$1 `
+	err := r.db.Select(&sets, query, workoutID)
+	if err != nil {
+		return nil, err
+	}
+	return sets, err
+}
