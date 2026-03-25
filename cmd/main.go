@@ -65,6 +65,11 @@ func main() {
 	WorkoutsService := services.NewWorkoutsService(WorkoutsRepo)
 	WorkoutsHandler := handlers.NewWorkoutHandler(WorkoutsService)
 
+	// dependency injection (sets)
+	SetsRepo := repository.NewSetsRepo(db)
+	SetsService := services.NewSetService(SetsRepo)
+	SetHanlder := handlers.NewSetHandler(SetsService, WorkoutsService)
+
 	r := gin.Default()
 
 	auth := r.Group("/auth")
@@ -82,6 +87,7 @@ func main() {
 		protected.GET("/workouts", WorkoutsHandler.GetAllWorkouts)
 		protected.GET("/workout/:id", WorkoutsHandler.GetWorkoutByID)
 		protected.DELETE("/workout/:id", WorkoutsHandler.DeleteWorkoutByID)
+		protected.POST("/sets/:id", SetHanlder.CreateSets)
 
 	}
 

@@ -37,3 +37,12 @@ type Workouts struct {
 	Notes  string    `db:"notes" json:"notes" binding:"required"`
 	Date   time.Time `db:"date" json:"date"`
 }
+
+type Sets struct {
+	ID         int    `db:"id" json:"id"`
+	WorkoutID  int    `db:"workout_id" json:"workout_id"`
+	ExerciseID int    `db:"exercise_id" json:"exercise_id" binding:"required"`
+	Reps       int    `db:"reps" json:"reps" binding:"required"`
+	Duration   int    `db:"duration" json:"duration"`
+	Weight_kg  string `db:"weight_kg" json:"weight_kg" binding:"required"`
+}
