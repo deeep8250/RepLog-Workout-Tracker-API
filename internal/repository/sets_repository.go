@@ -67,3 +67,16 @@ func (r *SetsRepo) DeleteSets(workoutID, setsID int) error {
 
 	return nil
 }
+
+func (r *SetsRepo) GetLastThreeSets(userID, exerciseID int) ([]models.Sets, error) {
+
+	var sets []models.Sets
+	query := `select * from sets as s join workouts w on s.workout_id=w.id where w.user_id=$1 and s.exercise_id=$2 order by w.date desc limit 3`
+	err := r.db.Select(&sets, query, userID, exerciseID)
+	if err != nil {
+		return nil, err
+	}
+
+	return sets, nil
+
+}
