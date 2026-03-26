@@ -125,3 +125,53 @@ func (h *setHandler) GetAllSets(c *gin.Context) {
 	})
 
 }
+
+func (h *setHandler) DeleteFromSetsHandler(c *gin.Context) {
+
+	workoutID := c.Param("workoutId")
+	workoutIDint, err := strconv.Atoi(workoutID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	setID := c.Param("setId")
+
+	setIDint, err := strconv.Atoi(setID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	UserID, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorised users",
+		})
+		return
+	}
+
+	_, err = h.WorkoutService.GetWorkoutsByID(workoutIDint, UserID.(int))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	err = h.SetService.DeleteFromSets(workoutIDint, setIDint)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "set deleted successfully",
+	})
+
+}

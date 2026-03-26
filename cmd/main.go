@@ -89,6 +89,7 @@ func main() {
 		protected.DELETE("/workout/:id", WorkoutsHandler.DeleteWorkoutByID)
 		protected.POST("/sets/:id", SetHanlder.CreateSets)
 		protected.GET("/sets/:id", SetHanlder.GetAllSets)
+		protected.DELETE("/workouts/:workoutId/sets/:setId", SetHanlder.DeleteFromSetsHandler)
 
 	}
 

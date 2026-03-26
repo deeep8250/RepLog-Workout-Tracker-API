@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"replog/internal/models"
 
 	"github.com/jmoiron/sqlx"
@@ -45,4 +46,24 @@ func (r *SetsRepo) GetSets(workoutID int) ([]models.Sets, error) {
 		return nil, err
 	}
 	return sets, err
+}
+
+func (r *SetsRepo) DeleteSets(workoutID, setsID int) error {
+	fmt.Printf("setsId :%d and workoutI :%d", setsID, workoutID)
+	query := `delete from sets  where id=$1 and workout_id=$2`
+	result, err := r.db.Exec(query, setsID, workoutID)
+	if err != nil {
+		return err
+	}
+
+	rowAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowAffected == 0 {
+		return errors.New("cant find the sets")
+	}
+
+	return nil
 }

@@ -31,3 +31,11 @@ func (s *SetsService) GetAllSets(workoutID int) ([]models.Sets, error) {
 	}
 	return results, nil
 }
+
+func (s *SetsService) DeleteFromSets(workoutID, setsID int) error {
+	err := s.repo.DeleteSets(workoutID, setsID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
