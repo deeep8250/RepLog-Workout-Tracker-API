@@ -90,6 +90,8 @@ func main() {
 		protected.POST("/sets/:id", SetHanlder.CreateSets)
 		protected.GET("/sets/:id", SetHanlder.GetAllSets)
 		protected.DELETE("/workouts/:workoutId/sets/:setId", SetHanlder.DeleteFromSetsHandler)
+		protected.GET("/progress/overload-check", SetHanlder.ShouldIncreaseHandler)
+		protected.GET("/progress/:exercise_id", SetHanlder.ProgressReportHandler)
 
 	}
 

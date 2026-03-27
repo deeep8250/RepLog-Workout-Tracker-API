@@ -175,3 +175,67 @@ func (h *setHandler) DeleteFromSetsHandler(c *gin.Context) {
 	})
 
 }
+
+func (h *setHandler) ProgressReportHandler(c *gin.Context) {
+
+	userId, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorised user",
+		})
+		return
+	}
+
+	exerciseID := c.Param("exercise_id")
+	exerciseIDint, err := strconv.Atoi(exerciseID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	value, err := h.SetService.ProgressReportService(userId.(int), exerciseIDint)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"report": value,
+	})
+
+}
+
+func (h *setHandler) ShouldIncreaseHandler(c *gin.Context) {
+
+	userId, ok := c.Get("userID")
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorised user",
+		})
+		return
+	}
+
+	targetedReps := c.Query("target_reps")
+	target_reps, err := strconv.Atoi(targetedReps)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	value, err := h.SetService.ShouldIncreaseService(target_reps, userId.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"report": value,
+	})
+
+}

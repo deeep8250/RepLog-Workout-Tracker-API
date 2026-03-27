@@ -46,3 +46,15 @@ type Sets struct {
 	Duration   int    `db:"duration" json:"duration"`
 	Weight_kg  string `db:"weight_kg" json:"weight_kg" binding:"required"`
 }
+
+type ProgressEntry struct {
+	Date     time.Time `db:"date" json:"date"`
+	WeightKg string    `db:"weight_kg" json:"weight_kg"`
+	Reps     int       `db:"reps" json:"reps"`
+}
+
+type ShouldIncreseOverload struct {
+	ExerciseID    int    `json:"exercise_id"`
+	ExerciseName  string `json:"exercise_name"`
+	ShouldIncrese bool   `json:"should_increase"`
+}
